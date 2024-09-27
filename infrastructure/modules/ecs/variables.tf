@@ -48,11 +48,6 @@ variable "app_completions_endpoint_arn" {
   type        = string
 }
 
-variable "max_bid_secret_arn" {
-  description = "The ARN of the secret for the max bid"
-  type        = string
-}
-
 variable "public_subnet_ids" {
   description = "The IDs of the public subnets"
   type        = list(string)

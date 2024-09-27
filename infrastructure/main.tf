@@ -44,7 +44,6 @@ module "iam" {
   app_api_key_arn                   = module.secret_manager.app_api_key_arn
   agent_market_api_key_arn          = module.secret_manager.agent_market_api_key_arn
   app_completions_endpoint_arn      = module.secret_manager.app_completions_endpoint_arn
-  max_bid_secret_arn                = module.secret_manager.max_bid_secret_arn
   foundation_model_name_secret_arn  = module.secret_manager.foundation_model_name_secret_arn
   aws_bedrock_region_secret_arn     = module.secret_manager.aws_bedrock_region_secret_arn
 }
@@ -52,7 +51,6 @@ module "iam" {
 module "secret_manager" {
   source                = "./modules/secret_manager"
   project_name          = var.project_name
-  max_bid               = var.max_bid
   foundation_model_name = var.foundation_model_name
   aws_bedrock_region    = var.aws_bedrock_region
 }
@@ -69,7 +67,6 @@ module "ecs" {
   app_api_key_arn                   = module.secret_manager.app_api_key_arn
   agent_market_api_key_arn          = module.secret_manager.agent_market_api_key_arn
   app_completions_endpoint_arn      = module.secret_manager.app_completions_endpoint_arn
-  max_bid_secret_arn                = module.secret_manager.max_bid_secret_arn
   public_subnet_ids                 = module.vpc.subnet_ids
   execution_role_arn                = module.iam.ecs_execution_role_arn
   task_role_arn                     = module.iam.ecs_task_role_arn

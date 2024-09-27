@@ -28,11 +28,6 @@ variable "app_completions_endpoint_arn" {
   type        = string
 }
 
-variable "max_bid_secret_arn" {
-  description = "The ARN of the secret for the max bid"
-  type        = string
-}
-
 variable "foundation_model_name_secret_arn" {
   description = "The ARN of the secret for the foundation model name"
   type        = string

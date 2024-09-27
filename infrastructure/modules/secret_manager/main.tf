@@ -14,16 +14,6 @@ data "aws_secretsmanager_secret" "app_completions_endpoint" {
   name = "${var.project_name}-${var.foundation_model_name}-app-completions-endpoint"
 }
 
-resource "aws_secretsmanager_secret" "max_bid" {
-  name        = "${var.project_name}-${var.foundation_model_name}-max-bid-"
-  description = "The maximum bid for the ${var.project_name} project, used by the agent ${var.foundation_model_name}"
-}
-
-resource "aws_secretsmanager_secret_version" "max_bid_value" {
-  secret_id     = aws_secretsmanager_secret.max_bid.id
-  secret_string = var.max_bid
-}
-
 resource "aws_secretsmanager_secret" "foundation_model_name" {
   name        = "${var.project_name}-${var.foundation_model_name}-foundation-model-name"
   description = "The name of the foundation model for the project"

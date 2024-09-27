@@ -4,10 +4,24 @@ from loguru import logger
 from app.deps.config import Settings
 
 
+def _get_proposal_bid() -> float:
+    """Get the bid amount for a proposal. This is a placeholder function that should be replaced
+    with a real implementation. The idea is to calculate the bid amount based on:
+    - The model's capabilities.
+    - The instance requirements.
+    - The running costs.
+    - The estimated reward.
+    """
+    return 0.01
+
+
 async def _create_proposal_for_instance(instance_id: str, settings: Settings) -> None:
     try:
         logger.info("Creating proposal for instance id: {}", instance_id)
-
+        proposal_max_bid = _get_proposal_bid()
+        logger.info(
+            f"Creating proposal with bid amount: {proposal_max_bid}, for instance: {instance_id}"
+        )
         headers = {
             "x-api-key": settings.agent_market_api_key,
             "Accept": "application/json",
@@ -15,7 +29,7 @@ async def _create_proposal_for_instance(instance_id: str, settings: Settings) ->
         url = f"{settings.agent_market_url}/v1/proposals/create/for-instance/{instance_id}"
         data = {
             "endpoint": settings.app_completions_endpoint,
-            "max_bid": settings.max_bid,
+            "max_bid": proposal_max_bid,
             "endpoint_api_key": settings.app_api_key,
         }
         async with httpx.AsyncClient() as client:

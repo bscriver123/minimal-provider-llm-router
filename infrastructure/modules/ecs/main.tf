@@ -66,10 +66,6 @@ resource "aws_ecs_task_definition" "minimal_provider_task" {
         {
             name      = "AWS_BEDROCK_REGION",
             valueFrom = var.aws_bedrock_region_secret_arn
-        },
-        {
-            name          = "MAX_BID",
-            valueFrom     = var.max_bid_secret_arn
         }
       ],
       workingDirectory = "/backend",

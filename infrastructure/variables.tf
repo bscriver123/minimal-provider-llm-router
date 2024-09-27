@@ -60,8 +60,3 @@ variable "app_completions_endpoint_secret_name" {
   type        = string
   default     = "APP_COMPLETIONS_ENDPOINT"
 }
-
-variable "max_bid" {
-  description = "The maximum bid for the agent market"
-  type        = string
-}

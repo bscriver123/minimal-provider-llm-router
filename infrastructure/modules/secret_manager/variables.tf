@@ -3,11 +3,6 @@ variable "project_name" {
   type        = string
 }
 
-variable "max_bid" {
-  description = "The maximum bid for completions"
-  type        = string
-}
-
 variable "foundation_model_name" {
   description = "The name of the foundation model"
   type        = string

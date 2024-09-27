@@ -86,7 +86,6 @@ resource "aws_iam_policy" "secrets_manager_policy" {
           var.app_api_key_arn,
           var.agent_market_api_key_arn,
           var.app_completions_endpoint_arn,
-          var.max_bid_secret_arn,
           var.foundation_model_name_secret_arn,
           var.aws_bedrock_region_secret_arn
         ]

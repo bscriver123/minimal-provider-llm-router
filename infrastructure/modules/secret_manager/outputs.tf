@@ -14,10 +14,6 @@ output "app_completions_endpoint_arn" {
   value = data.aws_secretsmanager_secret.app_completions_endpoint.arn
 }
 
-output "max_bid_secret_arn" {
-  value = aws_secretsmanager_secret.max_bid.arn
-}
-
 output "foundation_model_name_secret_arn" {
   value = aws_secretsmanager_secret.foundation_model_name.arn
 }

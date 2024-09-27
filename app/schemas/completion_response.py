@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel
 
 
 class Message(BaseModel):
@@ -12,7 +12,7 @@ class CompletionRequest(BaseModel):
     messages: list[dict]
 
     class Config:
-        extra = Extra.allow
+        extra = "allow"
 
 
 class Choice(BaseModel):

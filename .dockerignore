@@ -3,4 +3,4 @@ venv/*
 .git
 .gitignore
 Dockerfile
-cloud/*
+infrastructure/*

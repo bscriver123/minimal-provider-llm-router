@@ -1,17 +1,11 @@
-from typing import Optional, Self
-
-from pydantic import Field, model_validator
+from pydantic import Field
 from pydantic_settings import BaseSettings
-
-from app.providers import ModelName
 
 
 class Settings(BaseSettings):
-    foundation_model_name: ModelName = Field(..., description="The name of the model to use.")
-
-    aws_bedrock_region: Optional[str] = Field(None, description="The AWS region.")
-
-    openai_api_key: Optional[str] = Field(None, description="The API key for OpenAI.")
+    openai_api_key: str = Field(..., description="The API key for OpenAI.")
+    anthropic_api_key: str = Field(..., description="The API key for Anthropic.")
+    notdiamond_api_key: str = Field(..., description="The API key for notdiamond.")
 
     app_api_key: str = Field(..., description="The API key for the application.")
     app_completions_endpoint: str = Field(..., description="The endpoint for completions.")
@@ -28,13 +22,6 @@ class Settings(BaseSettings):
     )
 
     web_port: int = Field(80, description="The port on which the web server runs.")
-    max_bid: float = Field(0.01, gt=0, description="The maximum bid for a proposal.")
-    temperature: float = Field(
-        0.9,
-        gt=0,
-        lt=1,
-        description="The temperature setting for the model, must be between 0 and 1.",
-    )
     max_tokens: int = Field(
         1000,
         gt=0,
@@ -43,20 +30,6 @@ class Settings(BaseSettings):
 
     class Config:
         case_sensitive = False
-
-    @model_validator(mode="after")
-    def check_keys(self) -> Self:
-        if self.foundation_model_name in [ModelName.claude_sonnet_3, ModelName.claude_sonnet_3_5]:
-            if not self.aws_bedrock_region:
-                raise ValueError(
-                    "AWS access key ID, secret access key and region are required for AWS models."
-                )
-        elif self.foundation_model_name in [ModelName.gpt_4o]:
-            if not self.openai_api_key:
-                raise ValueError("OpenAI API key is required for OpenAI models.")
-        else:
-            raise ValueError("Invalid model name")
-        return self
 
 
 settings = Settings()

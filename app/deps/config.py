@@ -1,5 +1,9 @@
+import secrets
+
 from pydantic import Field
 from pydantic_settings import BaseSettings
+
+_app_api_key = secrets.token_urlsafe(32)
 
 
 class Settings(BaseSettings):
@@ -7,7 +11,7 @@ class Settings(BaseSettings):
     anthropic_api_key: str = Field(..., description="The API key for Anthropic.")
     notdiamond_api_key: str = Field(..., description="The API key for notdiamond.")
 
-    app_api_key: str = Field(..., description="The API key for the application.")
+    app_api_key: str = Field(_app_api_key, description="The API key for the application.")
     app_completions_endpoint: str = Field(..., description="The endpoint for completions.")
 
     market_url: str = Field("https://api.marketrouter.ai", description="The market URL.")

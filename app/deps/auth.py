@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 
 from app.deps.config import Settings, get_settings
 
-API_KEY_NAME = "Authorization"
+API_KEY_HEADER_NAME = "Authorization"
 
 
 class OAuth2PasswordBearerWithHeader(OAuth2PasswordBearer):
@@ -23,7 +23,7 @@ class OAuth2PasswordBearerWithHeader(OAuth2PasswordBearer):
         return token
 
 
-oauth2_scheme = OAuth2PasswordBearerWithHeader(tokenUrl="token", header_name=API_KEY_NAME)
+oauth2_scheme = OAuth2PasswordBearerWithHeader(tokenUrl="token", header_name=API_KEY_HEADER_NAME)
 
 
 def authenticate_user(

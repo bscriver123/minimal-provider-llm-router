@@ -8,8 +8,8 @@ from loguru import logger
 
 from app.deps.config import Settings, get_settings
 from app.endpoints import completions_router
-from app.schedulers.agent_market_scheduler import start_scheduler as start_agent_market_scheduler
-from app.schedulers.agent_market_scheduler import stop_scheduler as stop_agent_market_scheduler
+from app.schedulers.market_scheduler import start_scheduler as start_market_scheduler
+from app.schedulers.market_scheduler import stop_scheduler as stop_market_scheduler
 
 APP_VERSION: Final[str] = "0.0.2"
 
@@ -17,10 +17,10 @@ APP_VERSION: Final[str] = "0.0.2"
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator:
     logger.info("Starting up FastAPI application...")
-    start_agent_market_scheduler()
+    start_market_scheduler()
     yield
     logger.info("Shutting down FastAPI application...")
-    stop_agent_market_scheduler()
+    stop_market_scheduler()
 
 
 app = FastAPI(version=APP_VERSION, debug=True, lifespan=lifespan)

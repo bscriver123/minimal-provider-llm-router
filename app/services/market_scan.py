@@ -23,10 +23,10 @@ async def _create_proposal_for_instance(instance_id: str, settings: Settings) ->
             f"Creating proposal with bid amount: {proposal_max_bid}, for instance: {instance_id}"
         )
         headers = {
-            "x-api-key": settings.agent_market_api_key,
+            "x-api-key": settings.market_api_key,
             "Accept": "application/json",
         }
-        url = f"{settings.agent_market_url}/v1/proposals/create/for-instance/{instance_id}"
+        url = f"{settings.market_url}/v1/proposals/create/for-instance/{instance_id}"
         data = {
             "endpoint": settings.app_completions_endpoint,
             "max_bid": proposal_max_bid,
@@ -46,14 +46,14 @@ async def _create_proposal_for_instance(instance_id: str, settings: Settings) ->
         logger.error("Unexpected error occurred: {}", e)
 
 
-async def fill_open_instances_in_agent_market(settings: Settings) -> None:
+async def fill_open_instances_in_market(settings: Settings) -> None:
     try:
         headers = {
-            "x-api-key": settings.agent_market_api_key,
+            "x-api-key": settings.market_api_key,
             "Accept": "application/json",
         }
-        url = f"{settings.agent_market_url}/v1/instances/"
-        params = {"instance_status": settings.agent_market_open_instance_code}
+        url = f"{settings.market_url}/v1/instances/"
+        params = {"instance_status": settings.market_open_instance_code}
 
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=headers, params=params)
@@ -63,7 +63,7 @@ async def fill_open_instances_in_agent_market(settings: Settings) -> None:
         if not open_instances:
             return
 
-        url = f"{settings.agent_market_url}/v1/proposals/"
+        url = f"{settings.market_url}/v1/proposals/"
         async with httpx.AsyncClient() as client:
             response = await client.get(url, headers=headers)
         response.raise_for_status()

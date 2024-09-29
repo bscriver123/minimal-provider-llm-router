@@ -3,9 +3,8 @@ FROM python:3.11-slim-buster
 WORKDIR /backend
 
 # set env variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONPATH="${PYTHONPATH}:/backend"
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # install system dependencies
 RUN apt-get update \

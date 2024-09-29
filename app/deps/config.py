@@ -10,15 +10,13 @@ class Settings(BaseSettings):
     app_api_key: str = Field(..., description="The API key for the application.")
     app_completions_endpoint: str = Field(..., description="The endpoint for completions.")
 
-    agent_market_url: str = Field(
-        "https://api.agent.market", description="The URL for the agent market."
+    market_url: str = Field("https://api.marketrouter.ai", description="The market URL.")
+    market_api_key: str = Field(..., description="The market API key.")
+    market_scan_interval: int = Field(
+        2, gt=0, description="The interval in seconds at which to scan the market."
     )
-    agent_market_api_key: str = Field(..., description="The API key for the agent market.")
-    agent_market_scan_interval: int = Field(
-        2, gt=0, description="The interval in seconds at which to scan the agent market."
-    )
-    agent_market_open_instance_code: int = Field(
-        0, description="The code for an open instance in the agent market."
+    market_open_instance_code: int = Field(
+        0, description="The code for an open instance in the market."
     )
 
     web_port: int = Field(80, description="The port on which the web server runs.")

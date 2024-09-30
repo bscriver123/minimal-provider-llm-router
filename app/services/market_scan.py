@@ -17,7 +17,7 @@ def _get_proposal_bid() -> float:
 
 async def _create_proposal_for_instance(instance_id: str, settings: Settings) -> None:
     try:
-        logger.info("Creating proposal for instance id: {}", instance_id)
+        logger.info(f"Creating proposal for instance id: {instance_id}")
         proposal_max_bid = _get_proposal_bid()
         logger.info(
             f"Creating proposal with bid amount: {proposal_max_bid}, for instance: {instance_id}"
@@ -35,15 +35,9 @@ async def _create_proposal_for_instance(instance_id: str, settings: Settings) ->
         async with httpx.AsyncClient() as client:
             response = await client.post(url, headers=headers, json=data)
         response.raise_for_status()
-        logger.info("Proposal created successfully")
-    except AttributeError as e:
-        logger.error("Settings attribute error: {}", e)
-    except httpx.HTTPStatusError as e:
-        logger.error("HTTP error occurred: {}", e)
-    except httpx.RequestError as e:
-        logger.error("Request error occurred: {}", e)
+        logger.info(f"Proposal for instance id {instance_id} created successfully")
     except Exception as e:
-        logger.error("Unexpected error occurred: {}", e)
+        logger.error(f"Unexpected error occurred: {e}")
 
 
 async def fill_open_instances_in_market(settings: Settings) -> None:
@@ -74,15 +68,7 @@ async def fill_open_instances_in_market(settings: Settings) -> None:
             instance for instance in open_instances if instance["id"] not in filled_instances
         ]
         for instance in unfilled_instances:
-            logger.info("Processing instance: {}", instance)
+            logger.info(f"Processing instance: {instance}")
             await _create_proposal_for_instance(instance["id"], settings)
-    except AttributeError as e:
-        logger.error("Settings attribute error: {}", e)
-    except httpx.HTTPStatusError as e:
-        logger.error("HTTP error occurred: {}", e)
-    except httpx.RequestError as e:
-        logger.error("Request error occurred: {}", e)
-    except ValueError as e:
-        logger.error("JSON decode error occurred: {}", e)
     except Exception as e:
         logger.error("Unexpected error occurred: {}", e)

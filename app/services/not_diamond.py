@@ -12,15 +12,19 @@ not_diamond_client = NotDiamond()
 def get_not_diamond_response(completion_request: CompletionRequest) -> ChatCompletion:
     result, session_id, provider = not_diamond_client.chat.completions.create(
         messages=completion_request.messages,
-        # model=['openai/gpt-4o', 'openai/gpt-4o-mini', 'anthropic/claude-3-5-sonnet-20240620'],
-        model=["openai/gpt-4o", "openai/gpt-4o-mini"],
+        model=[
+            "openai/gpt-4o",
+            "openai/gpt-4o-mini",
+            "anthropic/claude-3-opus-20240229",
+            "anthropic/claude-3-5-sonnet-20240620",
+            "anthropic/claude-3-haiku-20240307",
+        ],
         tradeoff="cost",
     )
+
     logger.info(
-        f"Not Diamond session ID: {session_id}"
-    )  # A unique ID of Not Diamond's recommendation
-    logger.info(f"LLM called: {provider.model}")  # The LLM routed to
-    logger.info(f"LLM output: {result.content}")  # The LLM response
+        f"Notdiamond called LLM: {provider.model} with the completion_request: {completion_request}"
+    )  # noqa
 
     return ChatCompletion(
         id=result.id,

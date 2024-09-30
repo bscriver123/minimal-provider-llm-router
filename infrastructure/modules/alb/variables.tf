@@ -1,8 +1,3 @@
-variable "foundation_model_name" {
-  description = "The name of the foundation model"
-  type        = string
-}
-
 variable "minimal_provider_sg_id" {
   description = "The ID of the security group to allow minimal provider access"
   type        = string

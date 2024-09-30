@@ -3,11 +3,6 @@ variable "project_name" {
   type        = string
 }
 
-variable "foundation_model_name" {
-  description = "The name of the foundation model"
-  type        = string
-}
-
 variable "cpu_architecture" {
   description = "The CPU architecture of the ECS task"
   type        = string
@@ -33,13 +28,18 @@ variable "openai_api_key_arn" {
   type        = string
 }
 
-variable "app_api_key_arn" {
-  description = "The ARN of the secret for the app API key"
+variable "anthropic_api_key_arn" {
+  description = "The ARN of the secret for the Anthropic API key"
   type        = string
 }
 
-variable "agent_market_api_key_arn" {
-  description = "The ARN of the secret for the agent market API key"
+variable "notdiamond_api_key_arn" {
+  description = "The ARN of the secret for the notdiamond API key"
+  type        = string
+}
+
+variable "market_api_key_arn" {
+  description = "The ARN of the secret for the market API key"
   type        = string
 }
 
@@ -75,15 +75,5 @@ variable "alb_target_group_arn" {
 
 variable "minimal_provider_sg_id" {
   description = "The ID of the security group for the minimal provider"
-  type        = string
-}
-
-variable "foundation_model_name_secret_arn" {
-  description = "The ARN of the secret for the foundation model name"
-  type        = string
-}
-
-variable "aws_bedrock_region_secret_arn" {
-  description = "The ARN of the secret for the AWS Bedrock region"
   type        = string
 }

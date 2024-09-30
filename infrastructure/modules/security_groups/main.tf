@@ -1,5 +1,5 @@
 resource "aws_security_group" "minimal_provider_sg" {
-  name        = "${var.project_name}-${var.foundation_model_name}-sg"
+  name        = "${var.project_name}-llm-router-sg"
   description = "Allow HTTP inbound traffic"
   vpc_id      = var.vpc_id
 
@@ -19,7 +19,7 @@ resource "aws_security_group" "minimal_provider_sg" {
 }
 
 resource "aws_security_group" "lb_sg" {
-  name        = "${var.project_name}-${var.foundation_model_name}-lb-sg"
+  name        = "${var.project_name}-llm-router-lb-sg"
   description = "Allow HTTP traffic to the load balancer"
   vpc_id      = var.vpc_id
 

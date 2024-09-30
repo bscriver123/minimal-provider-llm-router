@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ecs_execution_role" {
-  name = "ecsExecutionRole${var.project_name}-${var.foundation_model_name}"
+  name = "ecsExecutionRole${var.project_name}-llm-router"
   description = "Role for ECS execution"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -16,7 +16,7 @@ resource "aws_iam_role" "ecs_execution_role" {
 }
 
 resource "aws_iam_role" "ecs_task_role" {
-  name = "ecsTaskRole${var.project_name}-${var.foundation_model_name}"
+  name = "ecsTaskRole${var.project_name}-llm-router"
   description = "Role for ECS tasks"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -33,7 +33,7 @@ resource "aws_iam_role" "ecs_task_role" {
 }
 
 resource "aws_iam_policy" "cloudwatch_logs_policy" {
-  name = "CloudWatchLogsPolicy${var.project_name}-${var.foundation_model_name}"
+  name = "CloudWatchLogsPolicy${var.project_name}-llm-router"
   description = "Policy for CloudWatch Logs"
   policy = jsonencode({
     Version = "2012-10-17",
@@ -52,7 +52,7 @@ resource "aws_iam_policy" "cloudwatch_logs_policy" {
 }
 
 resource "aws_iam_policy" "ecr_access_policy" {
-  name = "ECRAccessPolicy-${var.project_name}-${var.foundation_model_name}"
+  name = "ECRAccessPolicy-${var.project_name}-llm-router"
   description = "Policy for ECR access"
   policy = jsonencode({
     Version = "2012-10-17",
@@ -71,8 +71,8 @@ resource "aws_iam_policy" "ecr_access_policy" {
 }
 
 resource "aws_iam_policy" "secrets_manager_policy" {
-  name = "SecretsManagerPolicy${var.project_name}-${var.foundation_model_name}"
-  description = "Policy for Bedrock ECS tasks"
+  name = "SecretsManagerPolicy${var.project_name}-llm-router"
+  description = "Policy for ECS tasks"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -83,29 +83,11 @@ resource "aws_iam_policy" "secrets_manager_policy" {
         ],
         Resource = [
           var.openai_api_key_arn,
-          var.app_api_key_arn,
-          var.agent_market_api_key_arn,
+          var.anthropic_api_key_arn,
+          var.notdiamond_api_key_arn,
+          var.market_api_key_arn,
           var.app_completions_endpoint_arn,
-          var.foundation_model_name_secret_arn,
-          var.aws_bedrock_region_secret_arn
         ]
-      }
-    ]
-  })
-}
-
-resource "aws_iam_policy" "bedrock_policy" {
-  name        = "BedrockPolicy-${var.project_name}-${var.foundation_model_name}"
-  description = "Policy for Bedrock ECS tasks"
-  policy      = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect   = "Allow",
-        Action   = [
-          "bedrock:*"
-        ],
-        Resource = "*"
       }
     ]
   })
@@ -133,10 +115,4 @@ resource "aws_iam_policy_attachment" "secrets_manager_policy_attachment" {
   name       = "ecsExecutionRoleSecretsManagerPolicyAttachment"
   roles      = [aws_iam_role.ecs_execution_role.name]
   policy_arn = aws_iam_policy.secrets_manager_policy.arn
-}
-
-resource "aws_iam_policy_attachment" "bedrock_policy_attachment" {
-  name       = "ecsTaskRoleBedrockPolicyAttachment"
-  roles      = [aws_iam_role.ecs_task_role.name]
-  policy_arn = aws_iam_policy.bedrock_policy.arn
 }

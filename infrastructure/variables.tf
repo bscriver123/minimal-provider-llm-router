@@ -9,20 +9,10 @@ variable "aws_region" {
   default     = "eu-west-1" # Change if necessary
 }
 
-variable "aws_bedrock_region" {
-  description = "The AWS region to pull Bedrock resources from"
-  type        = string
-}
-
 variable "project_name" {
   description = "The name of the project"
   type        = string
   default     = "minimal-provider" # Change if necessary
-}
-
-variable "foundation_model_name" {
-  description = "The name of the foundation model"
-  type        = string
 }
 
 variable "cpu_architecture" {
@@ -43,16 +33,22 @@ variable "openai_api_key_secret_name" {
   default     = "OPEN_AI_API_KEY"
 }
 
-variable "app_api_key_secret_name" {
-  description = "The name of the secret for the app API key"
+variable "anthropic_api_key_secret_name" {
+  description = "The name of the secret for the Anthropic API key"
   type        = string
-  default     = "APP_API_KEY"
+  default     = "ANTHROPIC_API_KEY"
 }
 
-variable "agent_market_api_key_secret_name" {
-  description = "The name of the secret for the agent market API key"
+variable "notdiamond_api_key_secret_name" {
+  description = "The name of the secret for the notdiamond API key"
   type        = string
-  default     = "AGENT_MARKET_API_KEY"
+  default     = "NOTDIAMOND_API_KEY"
+}
+
+variable "market_api_key_secret_name" {
+  description = "The name of the secret for the market API key"
+  type        = string
+  default     = "MARKET_API_KEY"
 }
 
 variable "app_completions_endpoint_secret_name" {

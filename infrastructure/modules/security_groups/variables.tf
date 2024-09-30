@@ -8,11 +8,6 @@ variable "project_name" {
   type        = string
 }
 
-variable "foundation_model_name" {
-  description = "The name of the foundation model"
-  type        = string
-}
-
 variable "vpc_id" {
   description = "The ID of the VPC to deploy the security group to"
   type        = string

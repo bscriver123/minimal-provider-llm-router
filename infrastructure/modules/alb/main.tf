@@ -1,5 +1,5 @@
 resource "aws_lb" "app_lb" {
-  name               = "lb-${var.foundation_model_name}"
+  name               = "lb-llm-router"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.minimal_provider_sg_id]
@@ -9,7 +9,7 @@ resource "aws_lb" "app_lb" {
 }
 
 resource "aws_lb_target_group" "app_tg" {
-  name     = "tg-${var.foundation_model_name}"
+  name     = "tg-llm-router"
   port     = var.web_port
   protocol = "HTTP"
   vpc_id   = var.vpc_id

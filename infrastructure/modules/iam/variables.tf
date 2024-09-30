@@ -3,37 +3,27 @@ variable "project_name" {
   type        = string
 }
 
-variable "foundation_model_name" {
-  description = "The name of the foundation model"
-  type        = string
-}
-
 variable "openai_api_key_arn" {
   description = "The ARN of the secret for the OpenAI API key"
   type        = string
 }
 
-variable "app_api_key_arn" {
-  description = "The ARN of the secret for the app API key"
+variable "anthropic_api_key_arn" {
+  description = "The ARN of the secret for the Anthropic API key"
   type        = string
 }
 
-variable "agent_market_api_key_arn" {
-  description = "The ARN of the secret for the agent market API key"
+variable "notdiamond_api_key_arn" {
+  description = "The ARN of the secret for the notdiamond API key"
+  type        = string
+}
+
+variable "market_api_key_arn" {
+  description = "The ARN of the secret for the market API key"
   type        = string
 }
 
 variable "app_completions_endpoint_arn" {
   description = "The ARN of the secret for the app completions endpoint"
-  type        = string
-}
-
-variable "foundation_model_name_secret_arn" {
-  description = "The ARN of the secret for the foundation model name"
-  type        = string
-}
-
-variable "aws_bedrock_region_secret_arn" {
-  description = "The ARN of the secret for the AWS Bedrock region"
   type        = string
 }

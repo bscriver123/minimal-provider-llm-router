@@ -106,7 +106,25 @@ curl -X 'POST' \
 
 If successful, you will receive a Stripe link to deposit money into your **account**.
 
+## Model Selection in LLM Router
+
+The LLM router decides which model to use based on several factors, including:
+
+- **Cost Efficiency**: The router may choose a model that provides the best balance between cost and performance, often opting for less expensive models when the task does not require high precision.
+- **Model Capabilities**: Depending on the complexity of the task, the router selects a model that can handle the required operations effectively.
+- **Latency Requirements**: For tasks that require quick responses, the router might prioritize models that offer faster inference times.
+- **Availability**: The router considers the availability of models, selecting those that are currently operational and not overloaded.
+
+### Alternatives for Model Selection
+
+- **Round Robin**: Distribute requests evenly across all available models, regardless of their capabilities or costs.
+- **Weighted Random**: Assign weights to models based on their performance metrics and select models randomly according to these weights.
+- **Priority-Based**: Assign priorities to models based on specific criteria such as accuracy or speed, and select models based on these priorities.
+
+These strategies can be customized and combined to fit specific use cases and requirements.
+
 ## Setting up configuration variables
+
 In order to run the project you should fill the `.env` with the following variables:
 
 - `OPENAI_API_KEY`

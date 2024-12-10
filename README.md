@@ -11,7 +11,23 @@ The current functionalities are the following:
 
 - Completions endpoint: OpenAI-compatible wrapper with the model provided in the configuration file.
 
-## Installation
+## Dependencies
+
+The project requires the following Python packages, which are specified in the `requirements.txt` file:
+
+- `loguru==0.7.2`: Logging library for Python.
+- `openai==1.34.0`: OpenAI API client library.
+- `python-dotenv>=0.21.0`: Reads key-value pairs from a `.env` file and can set them as environment variables.
+- `fastapi==0.110.0`: Web framework for building APIs with Python 3.6+ based on standard Python type hints.
+- `uvicorn==0.24.0.post1`: ASGI server implementation, using `uvloop` and `httptools`.
+- `python-multipart==0.0.6`: Streaming multipart parser for Python.
+- `pre-commit==3.6.2`: Framework for managing and maintaining multi-language pre-commit hooks.
+- `pydantic-settings==2.3.3`: Pydantic-based settings management.
+- `APScheduler==3.10.4`: In-process task scheduler with Cron-like capabilities.
+- `ruff==0.4.9`: Linter and code formatter for Python.
+- `boto3==1.34.131`: AWS SDK for Python.
+- `aiobotocore==2.13.1`: Async client for AWS services using botocore and aiohttp.
+- `notdiamond[create]`: A package for interacting with the NotDiamond API.
 
 1. **Clone the repository**
 

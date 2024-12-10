@@ -1,51 +1,71 @@
-# Minimal provider setup
+# Minimal Provider Setup
 
 This repository is a minimal provider setup for [Market Router](https://api.marketrouter.ai). It contains the necessary code to deploy an API that will serve as a provider in Market Router.
 
-You can use it as a base to enhance the functionalities of the provider, improve bidding strategies, etc.
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Market API Key Setup](#market-api-key-setup)
+- [Configuration Variables](#setting-up-configuration-variables)
+- [Running the API Locally](#running-the-api-locally)
+- [Cloud Deployment (AWS)](#cloud-deployment-aws)
+- [Contributing](#contributing)
+- [License](#license)
 
-The current functionalities are the following:
-- Bid strategy: It scans for open instances and creates a proposal with the minimum bid allowed ($0.01).
+## Features
 
-- API Authentication: the API that will be used for proposals in the market gets authenticated with a static API key. We encourage future providers to enhance this system. For instance, implementing proposal-based API keys could offer more granular control.
-
-- Completions endpoint: OpenAI-compatible wrapper with the model provided in the configuration file.
+- **Bid Strategy**: Scans for open instances and creates a proposal with the minimum bid allowed ($0.01).
+- **API Authentication**: Uses a static API key for authentication. Future enhancements could include proposal-based API keys for more granular control.
+- **Completions Endpoint**: OpenAI-compatible wrapper with the model provided in the configuration file.
 
 ## Installation
 
+### Prerequisites
+- Python 3.11
+- Docker
+- AWS CLI
+- Terraform
+
+### Steps
+
 1. **Clone the repository**
 
-   ```shell
+   ```bash
    git clone https://github.com/GroupLang/minimal-provider-llm-router.git
    cd minimal-provider-llm-router
    ```
+
 2. **Install required libraries**
-   ```shell
+
+   ```bash
    python3.11 -m venv venv
    source venv/bin/activate
    pip install -r requirements.txt
    ```
+
 3. **Set up environment space**
-    - **Set up environment variables**
-        
-        Copy the sample environment file and configure it as per your requirements (see more [here](#setting-up-configuration-variables)).
 
-        ```shell
-        [ ! -f .env ] && cp .env.template .env
-        ```
+   - **Set up environment variables**
 
-    - **Install pre-commit**
+     Copy the sample environment file and configure it as per your requirements.
 
-        Install the pre-commit hooks to ensure that your commits meet the project's standard for code quality and formatting. This will set up hooks that run checks such as linting and formatting before you commit your changes, helping to catch errors early and maintain consistent code style throughout the project.
+     ```bash
+     [ ! -f .env ] && cp .env.template .env
+     ```
 
-        ```shell
-        pre-commit install
-        ```
+   - **Install pre-commit**
 
-## Market API key set up
+     Install the pre-commit hooks to ensure that your commits meet the project's standard for code quality and formatting.
+
+     ```bash
+     pre-commit install
+     ```
+
+## Market API Key Setup
 
 ### Registration
-```shell
+
+```bash
 curl -X 'POST' \
   'https://api.marketrouter.ai/v1/auth/register' \
   -H 'accept: application/json' \
@@ -59,9 +79,10 @@ curl -X 'POST' \
 ```
 
 ### Login
+
 After receiving a **HTTP 201** status code, you can proceed to login:
 
-```shell
+```bash
 curl -X 'POST' \
   'https://api.marketrouter.ai/v1/auth/login' \
   -H 'accept: application/json' \
@@ -69,10 +90,11 @@ curl -X 'POST' \
   -d 'username=<USERNAME_HERE>&password=<PASSWORD_HERE>'
 ```
 
-### API key creation
+### API Key Creation
+
 With the token received in the response `{"access_token":<TOKEN_HERE>, "token_type":"bearer"}`, you can create an API KEY to access the Market:
 
-```shell
+```bash
 curl -X 'POST' \
   'https://api.marketrouter.ai/v1/auth/create-api-key?name=<API_KEY_NAME>&is_live=true' \
   -H 'accept: application/json' \
@@ -80,7 +102,8 @@ curl -X 'POST' \
 ```
 
 A successful response (with **HTTP 201** status code) looks like this:
-```shell
+
+```json
 {
     "api_key":<YOUR_API_KEY>,
     "name":<API_KEY_NAME>,
@@ -88,11 +111,11 @@ A successful response (with **HTTP 201** status code) looks like this:
 }
 ```
 
-### Account top up
+### Account Top Up
 
-In order to be a provider, you need to ensure that your balance is positive. Otherwise, proposals won't be able to be created. To top up your account, call this endpoint:
+To ensure your balance is positive, call this endpoint:
 
-```shell
+```bash
 curl -X 'POST' \
   'https://api.marketrouter.ai/v1/payment/deposit' \
   -H 'accept: application/json' \
@@ -104,46 +127,49 @@ curl -X 'POST' \
 }'
 ```
 
-If successful, you will receive a Stripe link to deposit money into your **account**.
+## Setting Up Configuration Variables
 
-## Setting up configuration variables
-In order to run the project you should fill the `.env` with the following variables:
+Fill the `.env` with the following variables:
 
 - `OPENAI_API_KEY`
 - `ANTHROPIC_API_KEY`
 - `NOTDIAMOND_API_KEY`
+- `APP_COMPLETIONS_ENDPOINT`: The endpoint that requesters will use.
 
-- `APP_COMPLETIONS_ENDPOINT`: the endpoint that requesters will use. It will have the following form: `http://example.provider/v1/completions/`. In the [cloud deployment](#cloud-deployment-aws) section, section we will explain how this variable can be set with a custom value.
+## Running the API Locally
 
-## Running the API locally
+Build the Docker image and run the API:
 
-In order to test the API locally, you can build the Docker image and run the API with the following commands:
-
-```shell
+```bash
 docker build -t test . --no-cache
 docker run -p 80:80 --env-file .env test
 ```
 
-## Cloud deployment (AWS)
+## Cloud Deployment (AWS)
+
 The `infrastructure/` directory contains all the necessary Terraform files to deploy the API in AWS.
 
-The first step is to get the AWS credentials and store them in `$HOME/.aws`. Then, if it's the first time deploying the API, you need to create the secrets in AWS Secret Manager: 
-```shell
-bash create_secrets.sh
-```
+1. **AWS Credentials**: Store them in `$HOME/.aws`.
+2. **Create Secrets**: If it's the first time deploying, create the secrets in AWS Secret Manager:
 
-Next, you can deploy the API with the following command:
-```shell
-bash deploy.sh
-```
+   ```bash
+   bash create_secrets.sh
+   ```
 
-Do note that if you want to re-deploy the API you don't need to create the secrets again. You can just execute `./deploy.sh`.
+3. **Deploy the API**:
 
-### Setting the App completions endpoint with a custom domain
-As seen in the [Setting up configuration variables](#setting-up-configuration-variables) section, `APP_COMPLETIONS_ENDPOINT` is a necessary environment variable. It is the endpoint that will be provided to the Market when creating a proposal. If the proposal is the winning one, the Market will call this endpoint.
+   ```bash
+   bash deploy.sh
+   ```
 
-Having a static endpoint is important to ensure that deployments do not affect the minimal provider behavior. To get a static endpoint one needs to obtain the DNS name from the Application Load Balancer. Since this is created once the app is deployed, the first deployment should not submit proposals as they will not be able to fulfill until the requests to the given endpoint are redirected to the API.
+### Setting the App Completions Endpoint with a Custom Domain
 
-Having said that, one needs to add the DNS name record to the domain managed in its domain-name registrar of choice. Doing this will complete the setup of the DNS name and the minimal provider app will have a static completions endpoint. Make sure to test the completions endpoint before submitting proposals.
+To get a static endpoint, obtain the DNS name from the Application Load Balancer. Add the DNS name record to your domain registrar. Update the secret `APP_COMPLETIONS_ENDPOINT` in AWS Secrets Manager and redeploy the API.
 
-Lastly, do not forget to update the secret `APP_COMPLETIONS_ENDPOINT` in AWS Secrets Manager and redeploy the API.
+## Contributing
+
+Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) for more information.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

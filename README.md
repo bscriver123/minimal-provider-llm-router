@@ -1,3 +1,5 @@
+# New Project Title
+
 # Minimal provider setup
 
 This repository is a minimal provider setup for [Market Router](https://api.marketrouter.ai). It contains the necessary code to deploy an API that will serve as a provider in Market Router.
